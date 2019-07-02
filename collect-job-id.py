@@ -7,6 +7,7 @@ import time
 import random
 import lxml
 import lxml.html
+import re
 #import lxml.html as lx
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
@@ -39,15 +40,26 @@ def main():
         print(url2str)
         content, hitp = prox.prox_get(url2str)
         if hitp:
-            print("hit")
+            #print("hit")
+            pass
         else:
             time.sleep(random.randrange(40, 80) * 0.1)
-        print("contnt-length:%s" % (len(content)))
+        #print("contnt-length:%s" % (len(content)))
         doc = lxml.html.document_fromstring(content)
         elms = doc.xpath("//a")
         #elms = doc.xpath("//a[starts-with(@href, '/job/')]")
         for elm in elms:
-            print(elm.attrib["href"])
+            href = elm.attrib["href"]
+            if href:
+                m = re.match("^/job/(\d+)", href)
+                if m:
+                    jobid = m[1]
+                    jobids[jobid] = 1
+                    #print(jobid)
+
+
 
 if __name__ == "__main__":
     main()
+    keys = jobids.keys()
+    print(len(keys))

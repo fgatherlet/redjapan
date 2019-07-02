@@ -5,6 +5,9 @@ import os
 import os.path
 import time
 import random
+import lxml
+import lxml.html
+#import lxml.html as lx
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 import prox
@@ -26,6 +29,7 @@ print(f"params:{url.params}")
 print("---")
 
 # 41pages
+jobids = {}
 def main():
     for page in range(1, 42):
         qs['page'] = [page]
@@ -39,6 +43,11 @@ def main():
         else:
             time.sleep(random.randrange(40, 80) * 0.1)
         print("contnt-length:%s" % (len(content)))
+        doc = lxml.html.document_fromstring(content)
+        elms = doc.xpath("//a")
+        #elms = doc.xpath("//a[starts-with(@href, '/job/')]")
+        for elm in elms:
+            print(elm.attrib["href"])
 
 if __name__ == "__main__":
     main()

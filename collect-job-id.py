@@ -30,8 +30,12 @@ print(f"params:{url.params}")
 print("---")
 
 # 41pages
-jobids = {}
-def main():
+
+def job_url(jobid):
+    return f"https://www.green-japan.com/job/{jobid}"
+
+def get_jobids():
+    jobids = {}
     for page in range(1, 42):
         qs['page'] = [page]
         query = urlencode(qs, True)
@@ -55,11 +59,14 @@ def main():
                 if m:
                     jobid = m[1]
                     jobids[jobid] = 1
-                    #print(jobid)
+    return jobids.keys()
 
-
+def analyze_job(jobid):
+    xjob_url = job_url(jobid)
+    content, hitp = prox.prox_get(xjob_url)
+    job-offer-main-content
+    return content
 
 if __name__ == "__main__":
-    main()
-    keys = jobids.keys()
-    print(len(keys))
+    job = analyze_job(56762)
+    print(job)
